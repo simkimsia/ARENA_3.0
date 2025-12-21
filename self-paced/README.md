@@ -62,13 +62,51 @@ An example might be you prefer to use `uv` over `pip`
 
 Instead of opening the streamlit locally, I find it easier to just go to the hosted website at https://arena-chapter0-fundamentals.streamlit.app/ and keep a pdf copy in /pdf-of-streamlit
 
-## Option chosen: Python file and vscode
+## Option chosen: Python file and VS Code
 
 To access the course, there are 3 options given at https://arena-chapter0-fundamentals.streamlit.app/#how-to-access-the-course
 
-I choose option 2: Python file and vscode
+I choose option 2: Python file and VS Code (also the strong recommendation for all in-person participants).
 
-Which is also the strong recommendation for all in-person participants.
+### Workflow for Each Part
+
+1. **Open the Streamlit app** for the chapter you're working on:
+   - Chapter 0: https://arena-chapter0-fundamentals.streamlit.app/
+
+2. **Navigate to the exercises** by clicking on the part in the sidebar (e.g., "0️⃣ Prerequisites")
+   - The Streamlit page contains explanations, examples, and exercise descriptions
+   - Each exercise section has a Colab link for reference (but we won't use Colab)
+
+3. **Create a `solutions.py` file** in the corresponding exercises folder:
+   ```
+   chapter0_fundamentals/exercises/part0_prereqs/solutions.py  # yours
+   ```
+
+4. **Import the utilities at the top of your `solutions.py`**:
+   ```python
+   import sys
+   from pathlib import Path
+
+   # Ensure the exercises directory is in the path
+   section_dir = Path(__file__).resolve().parent
+   exercises_dir = section_dir.parent
+   if str(exercises_dir) not in sys.path:
+       sys.path.append(str(exercises_dir))
+
+   # Now import from utils and tests
+   from part0_prereqs import tests
+   from part0_prereqs.utils import arr, display_array_as_img, display_soln_array_as_img
+   ```
+
+5. **Work through each exercise**:
+   - Read the exercise description in Streamlit
+   - Write your solution in `solutions.py`
+   - Use `# %%` cell markers for VS Code's interactive Python features
+   - Run tests to verify: `tests.test_einsum_trace(your_function)`
+
+6. **Run your code** using VS Code:
+   - `Shift+Enter` to run the current selection/line
+   - Click "Run Cell" above any `# %%` marker
 
 ## Pacing
 

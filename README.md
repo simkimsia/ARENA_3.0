@@ -1,3 +1,5 @@
+> 📖 **My self-paced study notes:** [self-paced/README.md](self-paced/README.md)
+
 ### ARENA [slack channel](https://join.slack.com/t/arena-uk/shared_invite/zt-3d3sro2sn-lACCkkoA3Sjm8J0pvWSaGQ)
 
 * Please report any errors/concerns with the material in #errata.
@@ -76,16 +78,16 @@ Additionally, the later exercise sets include a lot of suggested bonus material 
 
 <img src="https://raw.githubusercontent.com/callummcdougall/computational-thread-art/master/example_images/misc/headers/header-ch3.png" width="400">
 
-The material in this chapter covers LLM evaluations (what they are for, how to design and build one). Evals produce empirical evidence on the model's capabilities and behavioral tendencies, which allows developers and regulators to make important decisions about training or deploying the model. In this chapter, you will learn the fundamentals of two types of eval: designing a simple multiple-choice (MC) question evaluation benchmark and building an LLM agent for an agent task to evaluate model capabilities with scaffolding. 
+The material in this chapter covers LLM evaluations (what they are for, how to design and build one). Evals produce empirical evidence on the model's capabilities and behavioral tendencies, which allows developers and regulators to make important decisions about training or deploying the model. In this chapter, you will learn the fundamentals of two types of eval: designing a simple multiple-choice (MC) question evaluation benchmark and building an LLM agent for an agent task to evaluate model capabilities with scaffolding.
 
 Some highlights from this chapter include:
 
 * Design and generate your own MCQ eval from scratch using LLMs, implementing Anthropic's [model-written eval](https://arxiv.org/abs/2212.09251) method
 * Using the [Inspect](https://inspect.ai-safety-institute.org.uk/) library written by the UK AI Safety Institute (AISI) to run evaluation experiments
 * Building a LLM agent that plays the Wikipedia Racing game
-* Implementing ReAct and inflexion as elicitation methods for LLM agents 
+* Implementing ReAct and inflexion as elicitation methods for LLM agents
 
-The exercises are written in collaboration with [Apollo Research](https://www.apolloresearch.ai/), and designed to give you the foundational skills for doing safety evaluation research on language models. 
+The exercises are written in collaboration with [Apollo Research](https://www.apolloresearch.ai/), and designed to give you the foundational skills for doing safety evaluation research on language models.
 
 ---
 

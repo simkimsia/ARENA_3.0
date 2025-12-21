@@ -31,6 +31,10 @@ Basic strategy is to always use rebase to keep your local main branch up to date
 
 ## How to do solutions
 
+In my case, my source solutions branch is `option2-python-vscode/solutions`.
+
+Every other solution branch will branch out from this.
+
 1. Create a new branch for the solution
     > git checkout -b option2-python-vscode/solutions/chapter_0/part0_prereqs
 

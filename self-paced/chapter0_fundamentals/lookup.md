@@ -30,7 +30,9 @@ The number inside a neuron is called the activation.
 
 For classic MNIST, 784 neurons correspond to a 28x28 pixel image.
 
-[3Blue1Brown - But what is a neural network? | Chapter 1, Deep learning](https://www.youtube.com/watch?v=aircAruvnKk)
+- [3Blue1Brown - But what is a neural network? | Chapter 1, Deep learning](https://www.youtube.com/watch?v=aircAruvnKk)
+- [3Blue1Brown - Gradient descent, how neural networks learn | Chapter 2, Deep learning](https://www.youtube.com/watch?v=IHZwWFHWa-w)
+- [3Blue1Brown - What is backpropagation really doing? | Chapter 3, Deep learning](https://www.youtube.com/watch?v=Ilg3gGewQ5U)
 
 The last layer of 10 neurons represents the 10 possible digits.
 
@@ -194,64 +196,10 @@ aka gradient descent.
 
 ## Einops
 
-**einops** (Einstein Operations) is a library that provides a readable, intuitive way to manipulate tensor dimensions using a string notation inspired by Einstein summation.
+**einops** (Einstein Operations) is a library for readable tensor dimension manipulation. See the dedicated guide: [einops.md](einops.md)
 
-### The `rearrange` function
-
-The most common operation is `einops.rearrange()`, which reshapes and reorders tensor dimensions.
-
-**Syntax:**
+Quick example from 0.0_prereqs:
 ```python
-einops.rearrange(tensor, "input_pattern -> output_pattern")
-```
-
-### Example from the exercises
-
-in 0.0_prereqs:
-
-```python
-arr_stacked = einops.rearrange(arr, "b c h w -> c h (b w)")
-```
-
-**Breaking it down:**
-
-| Symbol | Meaning |
-|--------|---------|
-| `b` | batch dimension (number of images, e.g., 6 digit images) |
-| `c` | channels (RGB = 3) |
-| `h` | height (pixels) |
-| `w` | width (pixels) |
-
-**What the pattern does:**
-
-1. **Input**: `b c h w` — a 4D array of shape `(6, 3, 28, 28)` (6 images, RGB, 28×28 pixels)
-2. **Output**: `c h (b w)` — a 3D array of shape `(3, 28, 168)`. Note that 168 = 6*28 (6 images, 28 pixels wide)
-
-The parentheses `(b w)` **merge** the batch and width dimensions together. This effectively places all 6 images side-by-side horizontally:
-
-```
-Before: 6 separate 28×28 images
-After:  1 combined image that is 28×168 (28 height × 6×28 width)
-```
-
-### Why einops is useful
-
-Traditional NumPy/PyTorch requires cryptic operations:
-```python
-# Hard to read
-arr.transpose(1, 2, 0, 3).reshape(3, 28, -1)
-```
-
-Einops makes intent explicit:
-```python
-# Clear and readable
+# Stack 6 images horizontally
 einops.rearrange(arr, "b c h w -> c h (b w)")
 ```
-
-### Other common einops operations
-
-| Operation | Purpose |
-|-----------|---------|
-| `rearrange` | Reshape, transpose, merge, or split dimensions |
-| `reduce` | Aggregate over dimensions (mean, sum, max, etc.) |
-| `repeat` | Tile/repeat tensor along dimensions |

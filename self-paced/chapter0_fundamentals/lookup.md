@@ -190,3 +190,68 @@ aka gradient descent.
 > **Vanishing Gradient Problem**: The sigmoid function squishes all inputs to a range between 0 and 1. When the output is very close to 0 or 1 (i.e., saturated), the derivative (gradient) of the sigmoid becomes extremely small—nearly zero. During backpropagation, gradients are multiplied together as they flow backward through layers. If each layer contributes a tiny gradient, these small numbers multiply to produce vanishingly small updates to weights in the earlier layers. This means those layers learn very slowly, or not at all. ReLU avoids this because its gradient is either 0 or 1—no squishing, no vanishing.
 - ReLU is more computationally efficient to evaluate than sigmoid.
 - However, an important point about ReLU and much of ML in general - the better empirical results often come before the theoretical justifications! A lot of ML is built on the philosophy of "experiment until you find something that works, then figure out why it works."
+
+
+## Einops
+
+**einops** (Einstein Operations) is a library that provides a readable, intuitive way to manipulate tensor dimensions using a string notation inspired by Einstein summation.
+
+### The `rearrange` function
+
+The most common operation is `einops.rearrange()`, which reshapes and reorders tensor dimensions.
+
+**Syntax:**
+```python
+einops.rearrange(tensor, "input_pattern -> output_pattern")
+```
+
+### Example from the exercises
+
+in 0.0_prereqs:
+
+```python
+arr_stacked = einops.rearrange(arr, "b c h w -> c h (b w)")
+```
+
+**Breaking it down:**
+
+| Symbol | Meaning |
+|--------|---------|
+| `b` | batch dimension (number of images, e.g., 6 digit images) |
+| `c` | channels (RGB = 3) |
+| `h` | height (pixels) |
+| `w` | width (pixels) |
+
+**What the pattern does:**
+
+1. **Input**: `b c h w` — a 4D array of shape `(6, 3, 28, 28)` (6 images, RGB, 28×28 pixels)
+2. **Output**: `c h (b w)` — a 3D array of shape `(3, 28, 168)`. Note that 168 = 6*28 (6 images, 28 pixels wide)
+
+The parentheses `(b w)` **merge** the batch and width dimensions together. This effectively places all 6 images side-by-side horizontally:
+
+```
+Before: 6 separate 28×28 images
+After:  1 combined image that is 28×168 (28 height × 6×28 width)
+```
+
+### Why einops is useful
+
+Traditional NumPy/PyTorch requires cryptic operations:
+```python
+# Hard to read
+arr.transpose(1, 2, 0, 3).reshape(3, 28, -1)
+```
+
+Einops makes intent explicit:
+```python
+# Clear and readable
+einops.rearrange(arr, "b c h w -> c h (b w)")
+```
+
+### Other common einops operations
+
+| Operation | Purpose |
+|-----------|---------|
+| `rearrange` | Reshape, transpose, merge, or split dimensions |
+| `reduce` | Aggregate over dimensions (mean, sum, max, etc.) |
+| `repeat` | Tile/repeat tensor along dimensions |

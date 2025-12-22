@@ -62,6 +62,14 @@ An example might be you prefer to use `uv` over `pip`
 
 Instead of opening the streamlit locally, I find it easier to just go to the hosted website at https://arena-chapter0-fundamentals.streamlit.app/ and keep a pdf copy in /pdf-of-streamlit
 
+## How to choose your own adventure / path
+
+At https://arena-resources.notion.site/ there's a map of the course in [excalidraw](https://app.excalidraw.com/l/9KwMnW35Xt8/8Krt4K7sxb3).
+
+![map of course](map.png)
+
+There's a speedrun option and there's clear indication of the various dependencies.
+
 ## Option chosen: Python file and VS Code
 
 To access the course, there are 3 options given at https://arena-chapter0-fundamentals.streamlit.app/#how-to-access-the-course
@@ -112,15 +120,21 @@ I choose option 2: Python file and VS Code (also the strong recommendation for a
 
 Given I am juggling work, and a part-time masters degree in Singapore Management University, taking this arena course is more of a upskilling exercise than a full course.
 
-My priority rule is, "Revenue > School > Upskilling".
+My priority rule is, **"Revenue > School > Upskilling"**.
 
-Given this, I will proceed with doing Arena 3.0 using the Concept Sprints.
+### Concept Sprints
 
-* *Status:* **"Concept Sprints" (Long Weekends Only).**
-* *Strategy:* Break Chapter 0 into atomic "Done" states to kill the [Zeigarnik Effect](https://www.psychologytoday.com/sg/basics/zeigarnik-effect#:~:text=The%20Zeigarnik%20Effect%20is%20the,easily%20recalled%20than%20completed%20tasks.).
-* *The Sprints:*
-    * **Sprint 1:** `part1_raytracing` (Stand-alone). *Goal: All cells in .ipynb run.*
-    * **Sprint 2:** `part2_cnns` (Depends on Sprint 1). *Tactic: Allocate first 30 mins for "Sprint 1 Refresher".*
-    * **Sprint 3:** `part3_optimization` (Depends on Sprint 2).
-* *Rule:* **Never open the next folder until the next sprint.**
-* *Constraint:* Do not touch this on weeknights. Only during Breaks/Long Weekends.
+To minimize the [Zeigarnik Effect](https://www.psychologytoday.com/sg/basics/zeigarnik-effect), I break the course into atomic "Done" states called **Concept Sprints**.
+
+| Phase | Content | Style |
+|-------|---------|-------|
+| Phase 1 | Fundamentals (0.0 → 0.4) | Sequential |
+| Phase 2 | Transformer/Interp (1.1 → 1.2 → 1.5.1) | Sequential |
+| Phase 3 | RL ↔ Evals | Interleaved |
+
+**Key Rules:**
+- Only work on Long Weekends / Breaks (no weeknights)
+- Never open the next folder until current sprint is DONE
+- 30-min refresher when switching tracks
+
+👉 **Full sprint plan:** [sprint-plan.md](sprint-plan.md)

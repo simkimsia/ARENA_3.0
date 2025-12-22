@@ -118,3 +118,75 @@ Most networks use ReLU (Rectified Linear Unit) because it's easier to train.
 ![ReLU](<relu.png>)
 
 $$ReLU  (x) = max(0, x)$$
+
+## Different layers presumably learn different things
+
+Given last layer is 10 neurons, each neuron is responsible for a digit.
+
+So 2nd last layer may be learning different components such as the o in 9, 8, etc, or the vertical stem in 7, 4, 1, etc.
+
+So the very first layer may learn edges.
+
+But, this is just a guess!
+
+We can visualize the weights of the connections from one layer to the next layer as a given pixel pattern. To know better and it looks just random.
+
+![visualizing the weights of the connections from one layer to the next layer as a given pixel pattern](<pixel-pattern.png>)
+
+This means the network can be just as confident of recognizing some random patterns as the digit 5.
+
+![confidently wrong](<confidently-wrong.png>)
+
+## Cost function explanation
+
+Let's say we start with random weights and biases first. Then we run the network and get some output. We compare that with what we desire.
+
+The difference is the cost function we want to apply.
+
+![Cost function is the difference between the output and the desired output](<cost-function.png>)
+
+Mathematically, cost function is the sum of the square of the differences between the output and the desired output.
+
+![Sum of square of the differences](<sum-square-difference.png>)
+
+The sum is small, when correct. The sum is large, when wrong.
+
+Consider the average cost is our measure of how good or bad the network is.
+
+The Neural Network function is such that
+
+1. Input : 784 pixels
+2. Output : 10 neurons
+3. Parameters: 13,002 weights and biases (input for cost function)
+
+The Cost Function is such that
+
+1. Input : 10 neurons (output of Neural Network function)
+2. Output : 1 number (the cost)
+3. Parameters: Many, many, many training examples
+
+## Finding minimum cost
+
+1. Find direction of steepest gradient / ascent ($\nabla C$)
+2. Small step in ($-\nabla C$) because we want to go down
+3. Repeat
+
+aka gradient descent.
+
+## QnA
+
+### What makes neural networks more powerful than basic statistical methods like linear regression?
+
+
+- Neural networks exploit **nonlinearity**, which allows them to express a much wider set of possible functions, whereas linear regression is relatively limited.
+- Neural networks are learned using **gradient descent**, meaning their **power isn't upper-bounded by the algorithms** which programmers or mathematicians can feasibly design by hand.
+
+
+### What are the advantages of ReLU activations over sigmoids?
+
+
+- ReLU more effectively avoids the **vanishing gradient**    problem, which is common in sigmoids.
+
+> **Vanishing Gradient Problem**: The sigmoid function squishes all inputs to a range between 0 and 1. When the output is very close to 0 or 1 (i.e., saturated), the derivative (gradient) of the sigmoid becomes extremely small—nearly zero. During backpropagation, gradients are multiplied together as they flow backward through layers. If each layer contributes a tiny gradient, these small numbers multiply to produce vanishingly small updates to weights in the earlier layers. This means those layers learn very slowly, or not at all. ReLU avoids this because its gradient is either 0 or 1—no squishing, no vanishing.
+- ReLU is more computationally efficient to evaluate than sigmoid.
+- However, an important point about ReLU and much of ML in general - the better empirical results often come before the theoretical justifications! A lot of ML is built on the philosophy of "experiment until you find something that works, then figure out why it works."

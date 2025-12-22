@@ -83,36 +83,76 @@ I choose option 2: Python file and VS Code (also the strong recommendation for a
 
 2. **Navigate to the exercises** by clicking on the part in the sidebar (e.g., "0️⃣ Prerequisites")
    - The Streamlit page contains explanations, examples, and exercise descriptions
-   - Each exercise section has a Colab link for reference (but we won't use Colab)
+   - Each exercise section has a Colab link for reference (open it to look at the exercise, but we won't use Colab to do the solutions)
 
 3. **Create a `solutions.py` file** in the corresponding exercises folder:
    ```
-   chapter0_fundamentals/exercises/part0_prereqs/solutions.py  # yours
+   chapter0_fundamentals/exercises/part0_prereqs/xxx_solutions.py  # yours, e.g. kimsia_solutions.py this is mine
    ```
 
-4. **Import the utilities at the top of your `solutions.py`**:
+   ![How to copy solutions.py](colab-1.png)
+
+4. **Paste cell by cell from the Colab into your `solutions.py`**:
    ```python
-   import sys
-   from pathlib import Path
+    # %%
 
-   # Ensure the exercises directory is in the path
-   section_dir = Path(__file__).resolve().parent
-   exercises_dir = section_dir.parent
-   if str(exercises_dir) not in sys.path:
-       sys.path.append(str(exercises_dir))
+    import math
+    import os
+    import sys
+    from pathlib import Path
 
-   # Now import from utils and tests
-   from part0_prereqs import tests
-   from part0_prereqs.utils import arr, display_array_as_img, display_soln_array_as_img
+    import einops
+    import numpy as np
+    import torch as t
+    from torch import Tensor
+
+    # Make sure exercises are in the path
+    chapter = "chapter0_fundamentals"
+    section = "part0_prereqs"
+    root_dir = next(p for p in Path.cwd().parents if (p / chapter).exists())
+    exercises_dir = root_dir / chapter / "exercises"
+    section_dir = exercises_dir / section
+    if str(exercises_dir) not in sys.path:
+        sys.path.append(str(exercises_dir))
+
+    import part0_prereqs.tests as tests
+    from part0_prereqs.utils import display_array_as_img, display_soln_array_as_img
+
+    MAIN = __name__ == "__main__"
    ```
 
-5. **Work through each exercise**:
+   Note that I added `# %%` cell markers for VS Code's interactive Python features
+
+5. **Make sure to copy paste the cells in order**
+
+    ![paste the next few cells](<colab-2.png>)
+
+6. **Remember to include if MAIN**
+
+    For direct calls to functions, remember to include if MAIN
+    ```python
+    # %%
+
+    if MAIN:
+        arr = np.load(section_dir / "numbers.npy")
+    ```
+
+    For function definitions, you need NOT wrap them inside `if MAIN`.
+    ```python
+    # %%
+    def your_function():
+        pass
+    ```
+
+    Always include `# %%` cell markers for VS Code's interactive Python features.
+
+7. **Work through each exercise**:
    - Read the exercise description in Streamlit
    - Write your solution in `solutions.py`
    - Use `# %%` cell markers for VS Code's interactive Python features
    - Run tests to verify: `tests.test_einsum_trace(your_function)`
 
-6. **Run your code** using VS Code:
+8. **Run your code** using VS Code:
    - `Shift+Enter` to run the current selection/line
    - Click "Run Cell" above any `# %%` marker
 
@@ -138,3 +178,6 @@ To minimize the [Zeigarnik Effect](https://www.psychologytoday.com/sg/basics/zei
 - 30-min refresher when switching tracks
 
 👉 **Full sprint plan:** [sprint-plan.md](sprint-plan.md)
+
+
+##

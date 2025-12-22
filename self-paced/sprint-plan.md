@@ -1,13 +1,15 @@
 # Interleaved Sprint Plan for ARENA 3.0
 
-**Goal:** Cover Fundamentals → Transformer/Interp → Interleave RL & Evals
-**Strategy:** Sequential phases, with interleaving only in Phase 3
-**Career Alignment:** AI4SE (AI for Software Engineering) — practical applications
-**Target Orgs:** Anthropic, DeepMind, mixedbread, applied AI research labs
+- **Goal:** Cover Fundamentals → Transformer/Interp → Interleave RL & Evals
+- **Strategy:** Sequential phases, with interleaving only in Phase 3
+- **Career Alignment:** AI4SE (AI for Software Engineering) — practical applications
+- **Target Orgs:** Anthropic, DeepMind, mixedbread, applied AI research labs
 
 ---
 
 ## Course Structure (Corrected)
+
+After taking into consideration the speedrun recommended by the course and the dependencies in [map](map.png), I have restructured the course into the following phases:
 
 ```
 Chapter 0: Fundamentals
@@ -66,8 +68,7 @@ Chapter 3: LLM Evals & Safety
 
 **Why this structure:**
 - **Phase 1 & 2 are sequential** — dependencies flow naturally, no context switching
-- **Phase 3 is interleaved** — RL and Evals are independent, so variety helps without breaking flow
-- **Only 2 tracks to juggle** — simpler mental model than 3-track
+- **Phase 3 is interleaved** — RL and Evals are independent, so variety helps without breaking flow. See [How to Use Interleaving for Deeper Learning](https://www.coursera.org/articles/interleaving) for details.
 
 ---
 
@@ -128,14 +129,14 @@ Now we interleave! Alternate between RL (R) and Evals (E) for variety.
 1. **Never open the next folder until current sprint is DONE**
 2. **Each sprint has a clear "Done Criteria"** — no ambiguity
 3. **Weeknights banned** — only Long Weekends / Breaks
-4. **30-min refresher** at start of each sprint when switching R ↔ E
+4. **30-min refresher** at start of each sprint when switching R ↔ E or when the last sprint was more than 2 weeks ago.
 5. **If stuck > 1 hour:** Skip exercise, mark as "TODO-REVISIT", move on
 
 ---
 
-## Refresher Protocol (Phase 3 only)
+## Refresher Protocol
 
-When switching RL ↔ Evals:
+When switching RL ↔ Evals or when the last sprint was more than 2 weeks ago:
 
 ```
 [0:00-0:15] Review previous sprint's key concepts (skim notes)

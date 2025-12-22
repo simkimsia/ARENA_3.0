@@ -36,13 +36,13 @@ In my case, my source solutions branch is `option2-python-vscode/solutions`.
 Every other solution branch will branch out from this.
 
 1. Create a new branch for the solution
-    > git checkout -b option2-python-vscode/solutions/chapter_0/part0_prereqs
+    > git checkout -b option2-python-vscode/solutions-chap0-part0
 
 2. Make your changes
     >  git commit -m "Add solution for chapter 0, part 0, prereqs"
 
 3. Push your changes to your fork
-    > git push origin option2-python-vscode/solutions/chapter_0/part0_prereqs
+    > git push origin option2-python-vscode/solutions-chap0-part0
 
 ## How to do own tooling
 

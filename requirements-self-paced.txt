@@ -17,7 +17,7 @@ openai>=1.56.2
 sentence-transformers
 
 # Data manipulation and analysis
-einops
+einops==0.8.1
 eindex-callum
 pandas>=1.5.0
 numpy-stl
@@ -48,13 +48,13 @@ docformatter
 
 # Visualization
 matplotlib
-plotly
+plotly==6.5.0
 streamlit
 streamlit-antd-components==0.2.5
 streamlit-image-select
 streamlit-on-Hover-tabs
 nnsight>=0.3.5
-imageio-ffmpeg
+imageio-ffmpeg==0.5.1
 mediapy
 
 # Chapter 1 (interp)

@@ -175,6 +175,15 @@ The Cost Function is such that
 
 aka gradient descent.
 
+## einops rearrange
+
+When I rearrange the tensor, I am squishing the dimensions. And the order of the dimensions matter.
+
+At 4D, it's batch, channel, height, width.
+At 3D, it's channel, height, width.
+
+So even after rearranging, the dimensions are still the same.
+
 ## QnA
 
 ### What makes neural networks more powerful than basic statistical methods like linear regression?

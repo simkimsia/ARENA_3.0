@@ -314,3 +314,59 @@ einops.rearrange(x, "b c (h p1) (w p2) -> b (h w) (p1 p2 c)", p1=2, p2=2)
 | `a b -> (a b)` | Merge dimensions |
 | `a b c -> a c` + `reduce` | Aggregate over `b` |
 | `a b -> a b c` + `repeat` | Add new dimension `c` |
+
+## Rearrange vs Repeat
+
+A common source of confusion:
+
+- **`rearrange`**: **Conservation of Volume**. The total number of elements must remain exactly the same. You are just shuffling them around.
+  - `b c h w -> b (c h w)` (OK: $N \to N$)
+  - `h w -> w h` (OK: $N \to N$)
+- **`repeat`**: **Duplication**. You are creating *new* elements by copying existing ones. The total number of elements increases.
+  - `h w -> h (2 w)` (Repeat: $N \to 2N$)
+  - `h w -> (2 h) w` (Repeat: $N \to 2N$)
+
+
+**Rule of thumb**: If the product of dimensions on the left != product of dimensions on the right, you probably need `repeat` (or `reduce`).
+
+### Can `repeat` reduce dimensions?
+
+Yes! `repeat` is powerful because it can perform **rearrangement (merging/flattening)** AND **repetition** in a single step.
+
+Example from exercise (3):
+```python
+# Input: (2, 3, 28, 28) -> (b, c, h, w)
+# Output: (3, 56, 56) -> (c, H_new, W_new)
+einops.repeat(arr[0:2], "b c h w -> c (b h) (2 w)")
+```
+Here, we are doing two things at once:
+1.  **Reducing 4D to 3D**: Merging `b` and `h` into a single height dimension `(b h)`. (This is a rearrange operation).
+2.  **Repeating data**: `w` -> `(2 w)`. (This is a repeat operation).
+
+### Common Pitfall: Unexpected identifiers (Left side vs Right side)
+
+If you include a dimension on the left side (LHS) of `repeat` but forget to use it on the right side (RHS), you will get an error:
+
+```
+EinopsError: Unexpected identifiers on the left side of repeat: {'b'}
+```
+
+**Why?** `repeat` is for duplication or rearrangement, not reduction. It cannot simply "drop" a dimension like `b`. If you ignore `b` on the right side, einops doesn't know which of the `b` items to keep (or if it should sum them, average them, etc.).
+
+**Example:**
+```python
+# Wrong: 'b' is on LHS but missing from RHS
+# einops.repeat(arr[0:2], "b c h w -> c (2 h) (2 w)")
+# >> Error: Unexpected identifiers on the left side of repeat: {'b'}
+```
+
+**Fix:** Ensure all LHS identifiers appear in the RHS pattern string somehow (even if merged into another dimension).
+
+```python
+# Correct: 'b' is used to multiply height
+einops.repeat(arr[0:2], "b c h w -> c (b h) (2 w)")
+```
+
+If you *wanted* to get rid of `b` (e.g. by averaging), you should use `reduce` instead.
+
+This is why `repeat` can look like it's "reducing" the number of dimensions (4D -> 3D) while actually increasing the number of elements.

@@ -125,3 +125,20 @@ if MAIN and not show:
     # but this is wrong as this means left hand side will have b as unexpected identifier
     arr3 = einops.repeat(arr[0:2], "b c h w -> c (b h) (2 w)")
     display_array_as_img(arr3)
+
+# %%
+#### (4) Stretching
+
+# The image below was stretched vertically by a factor of 2.
+if MAIN and not show:
+    display_soln_array_as_img(4)
+
+# %%
+if MAIN and show:
+    # again, we only care about 1 image, so it's 3D tensor, so it's arr[0] and c h w on the left
+    # stretch vertically means the height is increased by 2
+    # initially i didn't think it means repeat because we already use repeat to increase
+    # along the rows by using c (2 h) w
+    # but i then realized that stretching means we use c (h 2) w instead
+    arr4 = einops.repeat(arr[0], "c h w -> c (h 2) w")
+    display_array_as_img(arr4)

@@ -287,7 +287,27 @@ einops.repeat(x, "d -> b d", b=2)
  [1, 2, 3]]                    # shape (2, 3) — copied to 2 batches
 ```
 
-### 9. Creating image patches (Vision Transformers)
+### 9. Stretching vs Tiling (Order matters!)
+
+When using `repeat`, the order of multiplication inside the output pattern changes the result dramatically:
+
+```python
+# arr[0] is one image of shape (3, 224, 224) -> (c, h, w)
+
+# CASE 1: Tiling (repeating the pattern)
+# "c (2 h) w" -> The '2' comes FIRST.
+# Think: "Create 2 copies of the H dimension."
+# Result: Two copies of the image stacked vertically.
+tiled = einops.repeat(arr[0], "c h w -> c (2 h) w")
+
+# CASE 2: Stretching (repeating the pixels)
+# "c (h 2) w" -> The '2' comes LAST (inner loop).
+# Think: "For each row h, repeat it 2 times."
+# Result: The image is stretched vertically (pixel doubling).
+stretched = einops.repeat(arr[0], "c h w -> c (h 2) w")
+```
+
+### 10. Creating image patches (Vision Transformers)
 
 ```python
 # 1 image, 1 channel, 4×4 pixels (will split into 2×2 patches)

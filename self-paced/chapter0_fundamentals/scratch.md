@@ -1,5 +1,6 @@
-# Lookup
+# Scratchpad - Chapter 0 Fundamentals
 
+Objectives:
 
 - Understand the structure and function of neural networks
 - Learn essential linear algebra concepts like matrix operations and transformations
@@ -8,6 +9,11 @@
 - Cover some foundational information theory concepts, such as entropy and KL divergence
 - Enhance Python programming skills, focusing on NumPy and PyTorch basics
 
+## Resources
+
+- [3Blue1Brown - But what is a neural network? | Chapter 1, Deep learning](https://www.youtube.com/watch?v=aircAruvnKk)
+- [3Blue1Brown - Gradient descent, how neural networks learn | Chapter 2, Deep learning](https://www.youtube.com/watch?v=IHZwWFHWa-w)
+- [3Blue1Brown - What is backpropagation really doing? | Chapter 3, Deep learning](https://www.youtube.com/watch?v=Ilg3gGewQ5U)
 
 ## Neural Networks
 
@@ -15,12 +21,12 @@ Classic example
 
 ![784 neurons at layer 1 of multi-layer perceptron recognize handwritten digits](nn-recognize-1.png)
 
+
 - CNN -> good for image recognition
 - LSTM -> good for time series, good for speech recognition
 - Transformer -> good for NLP
 
 Simplest NN = multi-layer perceptron
-
 
 ## What's a Neuron?
 
@@ -29,10 +35,6 @@ A thing that holds a number and does some math.
 The number inside a neuron is called the activation.
 
 For classic MNIST, 784 neurons correspond to a 28x28 pixel image.
-
-- [3Blue1Brown - But what is a neural network? | Chapter 1, Deep learning](https://www.youtube.com/watch?v=aircAruvnKk)
-- [3Blue1Brown - Gradient descent, how neural networks learn | Chapter 2, Deep learning](https://www.youtube.com/watch?v=IHZwWFHWa-w)
-- [3Blue1Brown - What is backpropagation really doing? | Chapter 3, Deep learning](https://www.youtube.com/watch?v=Ilg3gGewQ5U)
 
 The last layer of 10 neurons represents the 10 possible digits.
 
@@ -110,8 +112,7 @@ $$
 - $n$ = number of neurons in layer 1
 - $k$ = number of neurons in layer 0 (input layer)
 
-
-## WHy do we use ReLU?
+## Why do we use ReLU?
 
 Using sigmoid is old school.
 
@@ -196,9 +197,10 @@ So even after rearranging, the dimensions are still the same.
 ### What are the advantages of ReLU activations over sigmoids?
 
 
-- ReLU more effectively avoids the **vanishing gradient**    problem, which is common in sigmoids.
+- ReLU more effectively avoids the **vanishing gradient** problem, which is common in sigmoids.
 
 > **Vanishing Gradient Problem**: The sigmoid function squishes all inputs to a range between 0 and 1. When the output is very close to 0 or 1 (i.e., saturated), the derivative (gradient) of the sigmoid becomes extremely small—nearly zero. During backpropagation, gradients are multiplied together as they flow backward through layers. If each layer contributes a tiny gradient, these small numbers multiply to produce vanishingly small updates to weights in the earlier layers. This means those layers learn very slowly, or not at all. ReLU avoids this because its gradient is either 0 or 1—no squishing, no vanishing.
+
 - ReLU is more computationally efficient to evaluate than sigmoid.
 - However, an important point about ReLU and much of ML in general - the better empirical results often come before the theoretical justifications! A lot of ML is built on the philosophy of "experiment until you find something that works, then figure out why it works."
 

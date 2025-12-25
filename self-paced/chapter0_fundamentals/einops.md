@@ -390,3 +390,34 @@ einops.repeat(arr[0:2], "b c h w -> c (b h) (2 w)")
 If you *wanted* to get rid of `b` (e.g. by averaging), you should use `reduce` instead.
 
 This is why `repeat` can look like it's "reducing" the number of dimensions (4D -> 3D) while actually increasing the number of elements.
+
+### 11. Flattening Channels: Group by Channel vs Group by Pixel
+
+When you have a 3-channel image (RGB) and you want to flatten it to 2D (height x width), the order of grouping determines whether you get "3 images side-by-side" or "1 stretched image".
+
+![Visualizing Group by Channel vs Pixel](einops-rearrange-group-by-channel-pixel.png)
+
+#### Case 1: Group by Channel `(c w)` - "Side-by-Side"
+**Pattern:** `c h w -> h (c w)`
+
+This pattern iterates through **Channels** first (slowest inner loop), then completes the **Width**.
+*   It finishes all `w` pixels for Channel 0 (Red).
+*   Then all `w` pixels for Channel 1 (Green).
+*   Then all `w` pixels for Channel 2 (Blue).
+
+**Result:**
+`[Red Image Block] [Green Image Block] [Blue Image Block]`
+Effectively splits the image into 3 replicas side-by-side.
+
+#### Case 2: Group by Pixel `(w c)` - "Stretch"
+**Pattern:** `c h w -> h (w c)`
+
+This pattern iterates through **Width** first (slowest inner loop), then iterates through the **Channels** for that pixel.
+*   Pixel 1: `r1, g1, b1`
+*   Pixel 2: `r2, g2, b2`
+
+**Result:**
+`[r1 g1 b1 r2 g2 b2 ...]`
+Effectively stretches the image horizontally by 3x.
+*   If the image is Grayscale (R=G=B), this looks like a perfect stretch.
+*   If the image is Color, this creates a "stripey" artifact pattern.

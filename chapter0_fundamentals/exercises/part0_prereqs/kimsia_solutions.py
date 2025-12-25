@@ -25,6 +25,7 @@ from part0_prereqs.utils import display_array_as_img, display_soln_array_as_img
 
 MAIN = __name__ == "__main__"
 
+# to make life easier for myself
 show = True
 
 # %%
@@ -49,7 +50,7 @@ For example:
 """
 
 # %%
-if MAIN and show:
+if MAIN and not show:
     print(arr[0].shape)
     display_array_as_img(arr[0])  # plotting the first image in the batch
 
@@ -134,7 +135,7 @@ if MAIN and not show:
     display_soln_array_as_img(4)
 
 # %%
-if MAIN and show:
+if MAIN and not show:
     # again, we only care about 1 image, so it's 3D tensor, so it's arr[0] and c h w on the left
     # stretch vertically means the height is increased by 2
     # initially i didn't think it means repeat because we already use repeat to increase
@@ -142,3 +143,30 @@ if MAIN and show:
     # but i then realized that stretching means we use c (h 2) w instead
     arr4 = einops.repeat(arr[0], "c h w -> c (h 2) w")
     display_array_as_img(arr4)
+
+# %%
+#### (5) Split channels
+
+# The image below was created by splitting out the 3 channels of the image (i.e. red, green, blue) and turning these into 3 stacked horizontal images. The output is 2D (the display function interprets this as a monochrome image).
+if MAIN and not show:
+    display_soln_array_as_img(5)
+
+# %%
+if MAIN and show:
+    # we only care about 1 image, so it's 3D tensor, so it's arr[0] and c h w on the left
+    # i googled and found https://medium.com/@kyeg/einops-in-30-seconds-377a5f4d641a
+    # so i thought the answer is `einops.rearrange(arr[0], "rgb h w -> rgb  h w", rgb=3)`
+    # but this is wrong as it's going to be 4D tensor
+    # a couple realizations:
+    # realization 1:
+    # checking the definition of `display_array_as_img` tells us that if
+    # parameter input array is a 2D tensor, it will simply grayscale the image.
+    # realization 2:
+    # we typically think of an image as 2D and this is correct,but when we represent a 2D image as 3D tensor
+    # it's better to visualize it as a 3D thing where each channel layer is vertically on top of next layer
+    # with RED as top layer, then GREEN, then BLUE. see einops.md#flattening-channels
+    # so physically both "c h w" and "h (c w)" are physically 2D images
+    # (c w) means we group by channel first and we get red, green, blue looking like 3 "replicas" side by side
+    # (w c) means we group by pixels first and we get "stretched" horizontal effect
+    arr5 = einops.rearrange(arr[0], "c h w -> h (c w)")
+    display_array_as_img(arr5)

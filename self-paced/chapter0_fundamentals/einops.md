@@ -205,37 +205,11 @@ einops.rearrange(x, "b h w -> b (h w)")
  [5, 6, 7, 8]]                # shape (2, 4) — flattened each 2×2 into length-4
 ```
 
-### 3. Split — breaking one dimension into two
+### 3. Split / Decomposition
 
-```python
-x = [[1, 2, 3, 4, 5, 6]]      # shape (1, 6)
+Splitting a single dimension into multiple components is a fundamental aspect of `einops`. To keep this guide focused, we've moved the detailed notes on **LHS vs RHS splitting** and **Decomposition logic** to a separate file:
 
-einops.rearrange(x, "b (h w) -> b h w", h=2, w=3)
-
-# Result:
-[[[1, 2, 3],
-  [4, 5, 6]]]                 # shape (1, 2, 3) — split 6 into 2×3
-```
-
-### 4. Splitting attention heads (Transformers)
-
-In transformers, you split an embedding into multiple attention heads:
-
-```python
-# Simplified: 1 batch, 2 tokens, hidden_dim=6 (will split into 2 heads × 3 dim each)
-x = [[[1, 2, 3, 4, 5, 6],
-      [7, 8, 9, 10, 11, 12]]]  # shape (1, 2, 6)
-
-einops.rearrange(x, "b s (h d) -> b h s d", h=2)
-
-# Result: shape (1, 2, 2, 3) — (batch, heads, seq, head_dim)
-[[[[1, 2, 3],      # head 0, token 0
-   [7, 8, 9]],     # head 0, token 1
-  [[4, 5, 6],      # head 1, token 0
-   [10, 11, 12]]]] # head 1, token 1
-```
-
-### 5. Merging attention heads back
+👉 **[Einops: Decomposition (Splitting)](einops-split.md)**
 
 ```python
 # Reverse of above: shape (1, 2, 2, 3) back to (1, 2, 6)
@@ -310,23 +284,6 @@ tiled = einops.repeat(arr[0], "c h w -> c (2 h) w")
 stretched = einops.repeat(arr[0], "c h w -> c (h 2) w")
 ```
 
-### 10. Creating image patches (Vision Transformers)
-
-```python
-# 1 image, 1 channel, 4×4 pixels (will split into 2×2 patches)
-x = [[[[1,  2,  3,  4],
-       [5,  6,  7,  8],
-       [9,  10, 11, 12],
-       [13, 14, 15, 16]]]]     # shape (1, 1, 4, 4)
-
-einops.rearrange(x, "b c (h p1) (w p2) -> b (h w) (p1 p2 c)", p1=2, p2=2)
-
-# Result: shape (1, 4, 4) — 4 patches of 4 pixels each
-[[[1,  2,  5,  6],    # top-left 2×2 patch, flattened
-  [3,  4,  7,  8],    # top-right 2×2 patch
-  [9,  10, 13, 14],   # bottom-left 2×2 patch
-  [11, 12, 15, 16]]]  # bottom-right 2×2 patch
-```
 
 ## Summary: Common patterns
 
@@ -408,6 +365,7 @@ When you have a 3-channel image (RGB) and you want to flatten it to 2D (height x
 **Pattern:** `c h w -> h (c w)`
 
 This pattern iterates through **Channels** first (slowest inner loop), then completes the **Width**.
+
 - It finishes all `w` pixels for Channel 0 (Red).
 - Then all `w` pixels for Channel 1 (Green).
 - Then all `w` pixels for Channel 2 (Blue).
@@ -421,11 +379,14 @@ Effectively splits the image into 3 replicas side-by-side.
 **Pattern:** `c h w -> h (w c)`
 
 This pattern iterates through **Width** first (slowest inner loop), then iterates through the **Channels** for that pixel.
+
 - Pixel 1: `r1, g1, b1`
 - Pixel 2: `r2, g2, b2`
 
 **Result:**
 `[r1 g1 b1 r2 g2 b2 ...]`
 Effectively stretches the image horizontally by 3x.
+
 - If the image is Grayscale (R=G=B), this looks like a perfect stretch.
-- If the image is Color, this creates a "stripey" artifact pattern.
+-*   If the image is Color, this creates a "stripey" artifact pattern.
+

@@ -1,4 +1,10 @@
 # %%
+# always go https://colab.research.google.com/github/callummcdougall/ARENA_3.0/blob/main/chapter0_fundamentals/exercises/part0_prereqs/0.0_Prerequisites_exercises.ipynb?t=20250910
+# in terminal make sure venv activated
+# cd chapter0_fundamentals/exercises/part0_prereqs/
+# python kimsia_solutions.py
+
+# %%
 
 # import math
 # import os
@@ -115,7 +121,7 @@ if MAIN and not show:
 
 # %%
 if MAIN and not show:
-    # We wantjust the first 2 of arr since it's 0 andd 1
+    # We wantjust the first 2 of arr since it's 0 and 1
     # sowe use arr[0:2]
     # it's going to be the same batch and channels, but the height is increased by 2
     # Originally i use `einops.repeat(arr[0:2], "b c h w -> b c (b h) w")`
@@ -152,7 +158,7 @@ if MAIN and not show:
     display_soln_array_as_img(5)
 
 # %%
-if MAIN and show:
+if MAIN and not show:
     # we only care about 1 image, so it's 3D tensor, so it's arr[0] and c h w on the left
     # i googled and found https://medium.com/@kyeg/einops-in-30-seconds-377a5f4d641a
     # so i thought the answer is `einops.rearrange(arr[0], "rgb h w -> rgb  h w", rgb=3)`
@@ -170,3 +176,23 @@ if MAIN and show:
     # (w c) means we group by pixels first and we get "stretched" horizontal effect
     arr5 = einops.rearrange(arr[0], "c h w -> h (c w)")
     display_array_as_img(arr5)
+
+# %%
+#### (6) Stack into rows & cols
+
+# This requires a rearrange operation with dimensions for row and column stacking.
+if MAIN and show:
+    display_soln_array_as_img(6)
+
+
+# %%
+# initially tried `arr6 = einops.rearrange(arr, "b c h w -> c (b h) (3 w)")`
+# i got
+# einops.EinopsError:  Error while processing rearrange-reduction pattern "b c h w -> c (b h) (3 w)".
+# Input tensor shape: (6, 3, 150, 150). Additional info: {}.
+# Non-unitary anonymous axes are not supported in rearrange (exception is length 1)
+# answer was `arr6 = einops.rearrange(arr, "(b1 b2) c h w -> c (b1 h) (b2 w)", b1=2)`
+
+if MAIN and show:
+    arr6 = einops.rearrange(arr, "(b1 b2) c h w -> c (b1 h) (b2 w)", b1=2, b2=3)
+    display_array_as_img(arr6)

@@ -31,6 +31,7 @@ A **tensor** is just a multi-dimensional array. The **dimensions** (also called 
 The most common operation is `einops.rearrange()`, which reshapes and reorders tensor dimensions.
 
 **Syntax:**
+
 ```python
 einops.rearrange(tensor, "input_pattern -> output_pattern")
 ```
@@ -67,12 +68,14 @@ After:  1 combined image that is 28×168 (28 height × 6×28 width)
 ## Why einops is useful
 
 Traditional NumPy/PyTorch requires cryptic operations:
+
 ```python
 # Hard to read
 arr.transpose(1, 2, 0, 3).reshape(3, 28, -1)
 ```
 
 Einops makes intent explicit:
+
 ```python
 # Clear and readable
 einops.rearrange(arr, "b c h w -> c h (b w)")
@@ -346,7 +349,6 @@ A common source of confusion:
   - `h w -> h (2 w)` (Repeat: $N \to 2N$)
   - `h w -> (2 h) w` (Repeat: $N \to 2N$)
 
-
 **Rule of thumb**: If the product of dimensions on the left != product of dimensions on the right, you probably need `repeat` (or `reduce`).
 
 ### Can `repeat` reduce dimensions?
@@ -354,14 +356,17 @@ A common source of confusion:
 Yes! `repeat` is powerful because it can perform **rearrangement (merging/flattening)** AND **repetition** in a single step.
 
 Example from exercise (3):
+
 ```python
 # Input: (2, 3, 28, 28) -> (b, c, h, w)
 # Output: (3, 56, 56) -> (c, H_new, W_new)
 einops.repeat(arr[0:2], "b c h w -> c (b h) (2 w)")
 ```
+
 Here, we are doing two things at once:
-1.  **Reducing 4D to 3D**: Merging `b` and `h` into a single height dimension `(b h)`. (This is a rearrange operation).
-2.  **Repeating data**: `w` -> `(2 w)`. (This is a repeat operation).
+
+1. **Reducing 4D to 3D**: Merging `b` and `h` into a single height dimension `(b h)`. (This is a rearrange operation).
+2. **Repeating data**: `w` -> `(2 w)`. (This is a repeat operation).
 
 ### Common Pitfall: Unexpected identifiers (Left side vs Right side)
 
@@ -374,6 +379,7 @@ EinopsError: Unexpected identifiers on the left side of repeat: {'b'}
 **Why?** `repeat` is for duplication or rearrangement, not reduction. It cannot simply "drop" a dimension like `b`. If you ignore `b` on the right side, einops doesn't know which of the `b` items to keep (or if it should sum them, average them, etc.).
 
 **Example:**
+
 ```python
 # Wrong: 'b' is on LHS but missing from RHS
 # einops.repeat(arr[0:2], "b c h w -> c (2 h) (2 w)")
@@ -398,26 +404,28 @@ When you have a 3-channel image (RGB) and you want to flatten it to 2D (height x
 ![Visualizing Group by Channel vs Pixel](einops-rearrange-group-by-channel-pixel.png)
 
 #### Case 1: Group by Channel `(c w)` - "Side-by-Side"
+
 **Pattern:** `c h w -> h (c w)`
 
 This pattern iterates through **Channels** first (slowest inner loop), then completes the **Width**.
-*   It finishes all `w` pixels for Channel 0 (Red).
-*   Then all `w` pixels for Channel 1 (Green).
-*   Then all `w` pixels for Channel 2 (Blue).
+- It finishes all `w` pixels for Channel 0 (Red).
+- Then all `w` pixels for Channel 1 (Green).
+- Then all `w` pixels for Channel 2 (Blue).
 
 **Result:**
 `[Red Image Block] [Green Image Block] [Blue Image Block]`
 Effectively splits the image into 3 replicas side-by-side.
 
 #### Case 2: Group by Pixel `(w c)` - "Stretch"
+
 **Pattern:** `c h w -> h (w c)`
 
 This pattern iterates through **Width** first (slowest inner loop), then iterates through the **Channels** for that pixel.
-*   Pixel 1: `r1, g1, b1`
-*   Pixel 2: `r2, g2, b2`
+- Pixel 1: `r1, g1, b1`
+- Pixel 2: `r2, g2, b2`
 
 **Result:**
 `[r1 g1 b1 r2 g2 b2 ...]`
 Effectively stretches the image horizontally by 3x.
-*   If the image is Grayscale (R=G=B), this looks like a perfect stretch.
-*   If the image is Color, this creates a "stripey" artifact pattern.
+- If the image is Grayscale (R=G=B), this looks like a perfect stretch.
+- If the image is Color, this creates a "stripey" artifact pattern.

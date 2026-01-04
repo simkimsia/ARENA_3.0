@@ -178,6 +178,8 @@ einops.repeat(pos, "s d -> b s d", b=2)
 
 ### 1. Transpose — swapping dimensions
 
+👉 **[Einops: Transpose (Coordinate Systems)](einops-transpose.md)**
+
 ```python
 x = [[1, 2, 3],
      [4, 5, 6]]              # shape (2, 3)

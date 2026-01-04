@@ -181,7 +181,7 @@ if MAIN and not show:
 #### (6) Stack into rows & cols
 
 # This requires a rearrange operation with dimensions for row and column stacking.
-if MAIN and show:
+if MAIN and not show:
     display_soln_array_as_img(6)
 
 
@@ -193,6 +193,22 @@ if MAIN and show:
 # Non-unitary anonymous axes are not supported in rearrange (exception is length 1)
 # answer was `arr6 = einops.rearrange(arr, "(b1 b2) c h w -> c (b1 h) (b2 w)", b1=2)`
 
-if MAIN and show:
+if MAIN and not show:
     arr6 = einops.rearrange(arr, "(b1 b2) c h w -> c (b1 h) (b2 w)", b1=2, b2=3)
     display_array_as_img(arr6)
+
+# %%
+
+#### (7) Transpose
+
+# Here, we've just flipped the model's horizontal and vertical dimensions. Transposing is a fairly common tensor operation.
+if MAIN and show:
+    display_soln_array_as_img(7)
+
+if MAIN and show:
+    # i guessed correctly
+    # but i think the key point is to realize the origin 0,0 at
+    # top left corner and imagine an imaginary line from
+    # top left to bottom right and mirror reflect see @einops-transpose.md
+    arr7 = einops.rearrange(arr[1], "c h w -> c w h")
+    display_array_as_img(arr7)

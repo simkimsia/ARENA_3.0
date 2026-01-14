@@ -36,6 +36,12 @@ The most common operation is `einops.rearrange()`, which reshapes and reorders t
 einops.rearrange(tensor, "input_pattern -> output_pattern")
 ```
 
+### The Golden Rule: Inner vs. Outer
+
+The most important concept in `einops` patterns is the **order of dimensions**. When you group dimensions inside parentheses like `(a b)`, the right-most identifier is always the "fastest" or "inner" dimension.
+
+👉 **[Einops: The Golden Rule of Dimension Order](einops-dimension-order.md)**
+
 ## Example from the exercises
 
 in 0.0_prereqs:
@@ -180,19 +186,16 @@ einops.repeat(pos, "s d -> b s d", b=2)
 
 👉 **[Einops: Transpose (Coordinate Systems)](einops-transpose.md)**
 
+### 2. Max Pooling — downsampling images
+
+👉 **[Einops: Max Pooling](einops-max-pooling.md)**
+
 ```python
-x = [[1, 2, 3],
-     [4, 5, 6]]              # shape (2, 3)
-
-einops.rearrange(x, "a b -> b a")
-
-# Result:
-[[1, 4],
- [2, 5],
- [3, 6]]                      # shape (3, 2)
+# 2x2 max pooling
+einops.reduce(x, "c (h 2) (w 2) -> c h w", "max")
 ```
 
-### 2. Merge — combining dimensions into one
+### 3. Merge — combining dimensions into one
 
 ```python
 x = [[[1, 2],

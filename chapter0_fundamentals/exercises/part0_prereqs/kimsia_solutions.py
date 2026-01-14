@@ -202,13 +202,31 @@ if MAIN and not show:
 #### (7) Transpose
 
 # Here, we've just flipped the model's horizontal and vertical dimensions. Transposing is a fairly common tensor operation.
-if MAIN and show:
+if MAIN and not show:
     display_soln_array_as_img(7)
 
-if MAIN and show:
+if MAIN and not show:
     # i guessed correctly
     # but i think the key point is to realize the origin 0,0 at
     # top left corner and imagine an imaginary line from
     # top left to bottom right and mirror reflect see @einops-transpose.md
     arr7 = einops.rearrange(arr[1], "c h w -> c w h")
     display_array_as_img(arr7)
+
+# %%
+#### (8) Shrinking
+# Hint - for this one, you should use max pooling - i.e. each pixel value in the output is the maximum of the corresponding 2x2 square in the original image
+
+if MAIN and show:
+    display_soln_array_as_img(8)
+
+if MAIN and show:
+    # (8) Shrinking
+    # Max pooling: for each 2x2 square, take the maximum value.
+    # LHS: c (h 2) (w 2) - grouping height and width into 2x2 blocks
+    # RHS: c h w - resulting in half the height and width
+    # read @einops-max-pooling.md and @einops-dimension-order.md for more details
+    arr8 = einops.reduce(
+        arr, "(b1 b2) c (h 2) (w 2) -> c  (b1 h) (b2 w)", b1=2, b2=3, reduction="max"
+    )
+    display_array_as_img(arr8)

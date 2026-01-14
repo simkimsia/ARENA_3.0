@@ -69,10 +69,9 @@ res = einops.rearrange(arr,
 ```
 
 **How to think about the order**:
-In `(b_rows b_cols)`, the **first** name is the "outer" dimension (slowest changing) and the **second** name is the "inner" dimension (fastest changing).
 
-- `b_rows=0` contains images `[0, 1, 2]`
-- `b_rows=1` contains images `[3, 4, 5]`
+In `(b_rows b_cols)`, the order determines which images end up next to each other. For a complete guide on "Inner vs. Outer" dimensions, see:
+👉 **[Einops: The Golden Rule of Dimension Order](einops-dimension-order.md)**
 
 ---
 

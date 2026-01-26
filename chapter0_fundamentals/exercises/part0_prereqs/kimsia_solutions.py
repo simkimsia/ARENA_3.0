@@ -13,9 +13,8 @@ from pathlib import Path
 
 import einops
 import numpy as np
-
-# import torch as t
-# from torch import Tensor
+import torch as t
+from torch import Tensor
 
 # Make sure exercises are in the path
 chapter = "chapter0_fundamentals"
@@ -217,10 +216,10 @@ if MAIN and not show:
 #### (8) Shrinking
 # Hint - for this one, you should use max pooling - i.e. each pixel value in the output is the maximum of the corresponding 2x2 square in the original image
 
-if MAIN and show:
+if MAIN and not show:
     display_soln_array_as_img(8)
 
-if MAIN and show:
+if MAIN and not show:
     # (8) Shrinking
     # Max pooling: for each 2x2 square, take the maximum value.
     # LHS: c (h 2) (w 2) - grouping height and width into 2x2 blocks
@@ -230,3 +229,37 @@ if MAIN and show:
         arr, "(b1 b2) c (h 2) (w 2) -> c  (b1 h) (b2 w)", b1=2, b2=3, reduction="max"
     )
     display_array_as_img(arr8)
+
+# %%
+
+
+def assert_all_equal(actual: Tensor, expected: Tensor) -> None:
+    assert actual.shape == expected.shape, f"Shape mismatch, got: {actual.shape}"
+    assert (actual == expected).all(), f"Value mismatch, got: {actual}"
+    print("Tests passed!")
+
+
+def assert_all_close(actual: Tensor, expected: Tensor, atol=1e-3) -> None:
+    assert actual.shape == expected.shape, f"Shape mismatch, got: {actual.shape}"
+    t.testing.assert_close(actual, expected, atol=atol, rtol=0.0)
+    print("Tests passed!")
+
+
+# %%
+#### (A1) rearrange
+# We'll start with a simple rearrange operation - you're asked to return a particular tensor using only t.arange and einops.rearrange. The t.arange function is similar to the numpy equivalent: torch.arange(start, end) will return a 1D tensor containing all the values from start to end - 1 inclusive.
+
+
+def rearrange_1() -> Tensor:
+    """Return the following tensor using only t.arange and einops.rearrange:
+
+    [[3, 4],
+     [5, 6],
+     [7, 8]]
+    """
+    return einops.rearrange(t.arange(3, 9), "(h w) -> h w", h=3, w=2)
+
+
+if MAIN:
+    expected = t.tensor([[3, 4], [5, 6], [7, 8]])
+    assert_all_equal(rearrange_1(), expected)
